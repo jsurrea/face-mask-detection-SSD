@@ -1,0 +1,11 @@
+__pycache__/*
+
+# External files
+calibril.ttf
+
+# Torch models
+*.pth
+
+# Images
+*.png
+*.jpg
