@@ -19,21 +19,15 @@ keep_difficult = True  # use objects considered difficult to detect?
 n_classes = len(label_map)  # number of different types of objects
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 base_state_dict = "ssd300_PascalVOC.pth"  # State dict path from a pretrained model 
-
-# Parser arguments
-parser = argparse.ArgumentParser()
-parser.add_argument("--exp", type=str, required=True)
-parser.add_argument("--weight", nargs="*", type=float, default=[1.,1.,1.,1.])
-parser.add_argument("--alpha", type=float, default=1)
-args = parser.parse_args()
+cudnn.benchmark = True
 
 # Lists to save losses
 epochs_list = []
 train_losses = []
 val_losses = []
 
-## EXPERIMENT PARAMETERS
-exp_name = args.exp
+## EXPERIMENT PARAMETERS (modify here)
+exp_name = "."
 
 # Learning parameters
 lr = 0.01  # learning rate
@@ -47,19 +41,14 @@ batch_size = 42  # batch size
 epochs = 300  # number of epochs to train
 workers = 4  # number of workers for loading data in the DataLoader
 
-# Criterion parameters
-#alpha = 0.8
-alpha = args.alpha
+alpha = 1
 neg_pos_ratio = 2
-#weight = [1., 2., 4., 3.]  # ("background", with_mask", "mask_weared_incorrect", "without_mask")
-weight = args.weight
-print("weight:",weight, "alpha:", alpha)
+weight = [1., 2., 4., 3.]  # ("background", with_mask", "mask_weared_incorrect", "without_mask")
 
-opt = "SGD"
-
-cudnn.benchmark = True
+opt = "SGD"  # 'SGD' or 'Adam'
 split = 'val'  # Change to test for final results
 
+## END OF EXPERIMENT PARAMETERS
 
 checkpoint = {}
 os.makedirs(exp_name, exist_ok=True)

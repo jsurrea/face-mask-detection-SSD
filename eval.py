@@ -68,6 +68,8 @@ def evaluate(model, data_loader):
 
 if __name__ == '__main__':
 
+    exp = "."
+
     # Load evaluation data
     split='test'  # 'val' or 'test' 
     keep_difficult = True  # difficult ground truth objects must always be considered in mAP calculation, because these objects DO exist!
@@ -81,9 +83,9 @@ if __name__ == '__main__':
                                             collate_fn=eval_dataset.collate_fn, num_workers=workers, pin_memory=True)
 
     # Load model checkpoint that is to be evaluated
-    checkpoint = torch.load("model_final.pth")
+    checkpoint = torch.load(f"{exp}/model_final.pth")
     start_epoch = checkpoint['epoch']
-    print(f'\nLoaded checkpoint model_final.pth from epoch %d.\n' % start_epoch)
+    print(f'\nLoaded checkpoint {exp}/model_final.pth from epoch %d.\n' % start_epoch)
     state_dict = checkpoint['model_state_dict']
     model = SSD300(n_classes=4)  # Hard coded for 3 classes + background
     model.load_state_dict(state_dict, strict=True)
